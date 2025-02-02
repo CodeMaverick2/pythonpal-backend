@@ -7,22 +7,11 @@ import authRouter from './routes/auth.js';
 const app = express();
 
 // Parse frontend URLs from environment variable
-const allowedOrigins = process.env.FRONTEND_URLS ? 
-  process.env.FRONTEND_URLS.split(',') : 
-  ['http://localhost:3000', 'http://localhost:3002'];
+const allowedOrigins = process.env.FRONTEND_URLS;
 
 // Enable CORS with specific options
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
+  origin: '*',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token']
